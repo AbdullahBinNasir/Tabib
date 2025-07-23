@@ -1,0 +1,8 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Medical Cross -->
+  <rect x="85" y="40" width="30" height="120" rx="8" fill="#2196F3"/>
+  <rect x="40" y="85" width="120" height="30" rx="8" fill="#2196F3"/>
+  
+  <!-- Circular Border -->
+  <circle cx="100" cy="100" r="95" stroke="#2196F3" stroke-width="10" fill="none"/>
+</svg>

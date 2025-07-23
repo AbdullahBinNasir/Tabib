@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "780410177377",
+    "project_id": "tabib-d9f36",
+    "storage_bucket": "tabib-d9f36.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:780410177377:android:ce427ca50d3457d4fd2720",
+        "android_client_info": {
+          "package_name": "com.example.tabib"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "780410177377-6vu231pcgaosbtknun92qrdg2smeik0r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tabib",
+            "certificate_hash": "1e917cc9d0cfbc6f595801f108aede383894dc0c"
+          }
+        },
+        {
+          "client_id": "780410177377-8v3no8e202hkbgobijs4edbim6eineag.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAO8Qj_rrSsAJ_ltg2QNzeQp8FWA01hns4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "780410177377-8v3no8e202hkbgobijs4edbim6eineag.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "780410177377-v7gpuigdm75litagtbc2bpdopkd7bmf9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.tabib"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
