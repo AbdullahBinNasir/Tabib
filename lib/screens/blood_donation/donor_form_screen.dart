@@ -20,13 +20,17 @@ class _DonorFormScreenState extends State<DonorFormScreen> {
   final _cnicController = TextEditingController();
   final _cityController = TextEditingController();
   final _areaController = TextEditingController();
+  final _bloodAmountController = TextEditingController();
+  final _priceController = TextEditingController(text: '0');
+  final _availabilityDateController = TextEditingController();
+  final _timeController = TextEditingController();
 
   String? _selectedBloodGroup;
   String? _selectedGender;
   // Removed unused variable String? _selectedCountry;
 
   final List<String> _bloodGroups = [
-    'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'
+    'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-',
   ];
 
   final List<String> _genders = ['Male', 'Female', 'Other'];
@@ -40,6 +44,10 @@ class _DonorFormScreenState extends State<DonorFormScreen> {
     _cnicController.dispose();
     _cityController.dispose();
     _areaController.dispose();
+    _bloodAmountController.dispose();
+    _priceController.dispose();
+    _availabilityDateController.dispose();
+    _timeController.dispose();
     super.dispose();
   }
 
@@ -55,9 +63,13 @@ class _DonorFormScreenState extends State<DonorFormScreen> {
       final area = _areaController.text;
       final bloodGroup = _selectedBloodGroup;
       final gender = _selectedGender;
+      final bloodAmount = double.tryParse(_bloodAmountController.text);
+      final price = double.tryParse(_priceController.text) ?? 0;
+      final availabilityDate = _availabilityDateController.text;
+      final time = _timeController.text;
 
       // Basic validation for dropdowns and age
-      if (age == null || bloodGroup == null || gender == null) {
+      if (age == null || bloodGroup == null || gender == null || bloodAmount == null || bloodAmount <= 0) {
          ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Please fill all required fields correctly.')),
         );
@@ -84,16 +96,39 @@ class _DonorFormScreenState extends State<DonorFormScreen> {
           gender: gender,
           city: city,
           area: area,
+          bloodAmount: bloodAmount,
+          price: price,
+          availabilityDate: availabilityDate,
+          time: time,
         );
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Donor registered successfully!')),
         );
-        Navigator.pop(context); // Navigate back after successful submission
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: AppColors.primaryColor.withOpacity(0.95),
+              title: const Text('Thank You!', style: TextStyle(color: Colors.white)),
+              content: const Text('Check Your Email For Further Updates', style: TextStyle(color: Colors.white)),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('OK', style: TextStyle(color: Colors.white)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.pop(context); // Navigate back after successful submission
+                  },
+                ),
+              ],
+            );
+          },
+        );
 
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error registering donor: \$e')),
+          SnackBar(content: Text('Error registering donor: $e')),
         );
       } finally {
          // Optionally hide loading indicator
@@ -170,6 +205,20 @@ class _DonorFormScreenState extends State<DonorFormScreen> {
                   validator: (value) =>
                       value?.isEmpty == true ? 'Please enter your phone number' : null,
                 ),
+                CustomInputField(
+                  label: 'How much blood do you want to donate? (liters)',
+                  hint: 'Enter amount in liters',
+                  controller: _bloodAmountController,
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  validator: (value) {
+                    if (value?.isEmpty == true) return 'Please enter the amount';
+                    final amount = double.tryParse(value!);
+                    if (amount == null || amount <= 0) {
+                      return 'Please enter a valid amount in liters';
+                    }
+                    return null;
+                  },
+                ),
                 _buildDropdownField(
                   'Gender',
                   _selectedGender,
@@ -189,6 +238,60 @@ class _DonorFormScreenState extends State<DonorFormScreen> {
                   controller: _areaController,
                   validator: (value) =>
                       value?.isEmpty == true ? 'Please enter your area' : null,
+                ),
+                CustomInputField(
+                  label: 'Price',
+                  hint: 'Enter price (default 0)',
+                  controller: _priceController,
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) return null;
+                    final price = double.tryParse(value);
+                    if (price == null || price < 0) return 'Enter a valid price';
+                    return null;
+                  },
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    final picked = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime(2100),
+                    );
+                    if (picked != null) {
+                      _availabilityDateController.text = picked.toIso8601String().split('T')[0];
+                      setState(() {});
+                    }
+                  },
+                  child: AbsorbPointer(
+                    child: CustomInputField(
+                      label: 'Availability Date',
+                      hint: 'Select date',
+                      controller: _availabilityDateController,
+                      validator: (value) => value == null || value.isEmpty ? 'Select a date' : null,
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    final picked = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    );
+                    if (picked != null) {
+                      _timeController.text = picked.format(context);
+                      setState(() {});
+                    }
+                  },
+                  child: AbsorbPointer(
+                    child: CustomInputField(
+                      label: 'Time',
+                      hint: 'Select time',
+                      controller: _timeController,
+                      validator: (value) => value == null || value.isEmpty ? 'Select a time' : null,
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
@@ -253,4 +356,3 @@ class _DonorFormScreenState extends State<DonorFormScreen> {
     );
   }
 }
-

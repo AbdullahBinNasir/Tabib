@@ -199,6 +199,10 @@ class _DonorListScreenState extends State<DonorListScreen> {
               _buildDetailItem('Area', donor['area'] ?? ''),
               _buildDetailItem('Phone', donor['phoneNumber'] ?? ''),
               _buildDetailItem('Email', donor['email'] ?? ''),
+              _buildDetailItem('Blood Amount', donor['bloodAmount']?.toString() ?? ''),
+              _buildDetailItem('Price', donor['price']?.toString() ?? '0'),
+              _buildDetailItem('Availability Date', donor['availabilityDate'] ?? ''),
+              _buildDetailItem('Time', donor['time'] ?? ''),
               const SizedBox(height: 24),
               SizedBox(
                 width: double.infinity,

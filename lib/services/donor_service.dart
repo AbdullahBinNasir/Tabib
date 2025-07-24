@@ -15,6 +15,10 @@ class DonorService {
     required String gender,
     required String city,
     required String area,
+    required double bloodAmount,
+    required double price,
+    required String availabilityDate,
+    required String time,
   }) async {
     try {
       await _firestore.collection('donors').doc(userId).set({
@@ -28,6 +32,11 @@ class DonorService {
         'gender': gender,
         'city': city,
         'area': area,
+        'bloodAmount': bloodAmount,
+        'price': price,
+        'availabilityDate': availabilityDate,
+        'time': time,
+        'status': 'pending',
         'isAvailable': true,
         'registeredAt': FieldValue.serverTimestamp(),
       });
@@ -41,9 +50,14 @@ class DonorService {
     String? bloodGroup,
     String? gender,
     String? city,
+    bool isAdmin = false,
   }) async {
     try {
-      Query query = _firestore.collection('donors').where('isAvailable', isEqualTo: true);
+      Query query = _firestore.collection('donors');
+
+      if (!isAdmin) {
+        query = query.where('isAvailable', isEqualTo: true);
+      }
 
       if (bloodGroup != null && bloodGroup != 'All') {
         query = query.where('bloodGroup', isEqualTo: bloodGroup);
@@ -77,6 +91,17 @@ class DonorService {
     try {
       await _firestore.collection('donors').doc(donorId).update({
         'isAvailable': isAvailable,
+      });
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  // Update donor status (approve/reject)
+  Future<void> updateDonorStatus(String donorId, String status) async {
+    try {
+      await _firestore.collection('donors').doc(donorId).update({
+        'status': status,
       });
     } catch (e) {
       throw e;

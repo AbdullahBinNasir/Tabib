@@ -14,6 +14,7 @@ import 'screens/auth/login_screen.dart';
 import 'screens/pharmacy/pharmacy_dashboard.dart';
 import 'screens/pharmacy/Pharmacy_orders.dart';
 import 'screens/pharmacy/add_medicine_screen.dart';
+import 'screens/admin/admin_panel_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,8 +48,8 @@ class MyApp extends StatelessWidget {
           '/pharmacy': (context) => const PharmacyDashboard(),
           '/pharmacy-orders': (context) => const OrderManagementPage(),
           '/add-medicine': (context) => const AddMedicineScreen(),
-                    '/home': (context) => const HomeScreen(),
-
+          '/home': (context) => const HomeScreen(),
+          '/adminDashboard': (context) => const AdminPanelScreen(),
         },
       ),
     );

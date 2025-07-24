@@ -110,6 +110,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
                 child: const Text('Change Password'),
               ),
+              const Spacer(),
+              ElevatedButton.icon(
+                onPressed: () async {
+                  await Provider.of<AuthProvider>(context, listen: false).signOut();
+                  Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+                },
+                icon: const Icon(Icons.logout),
+                label: const Text('Logout'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size.fromHeight(48),
+                ),
+              ),
             ],
           ),
         ),

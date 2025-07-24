@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 import 'donor_form_screen.dart';
 import 'donor_list_screen.dart';
+import 'blood_request_form_screen.dart';
 
 class BloodDonationScreen extends StatelessWidget {
   const BloodDonationScreen({Key? key}) : super(key: key);
@@ -43,6 +44,17 @@ class BloodDonationScreen extends StatelessWidget {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const DonorListScreen()),
+              ),
+            ),
+            const SizedBox(height: 16),
+            _OptionCard(
+              title: 'Request Blood (as Patient)',
+              description: 'Request blood from the blood bank',
+              icon: Icons.bloodtype,
+              color: Colors.red,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const BloodRequestFormScreen()),
               ),
             ),
           ],
